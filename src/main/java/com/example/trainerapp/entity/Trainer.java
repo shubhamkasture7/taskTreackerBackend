@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "trainer")
@@ -23,13 +22,7 @@ public class Trainer {
     private String email;
 
     private int experience;
-
     private String address;
-
     private String format;
-
     private String mobileNumber;
-
-    @Column(columnDefinition = "JSON")
-    private String subjects; // Store subjects as JSON string
 }

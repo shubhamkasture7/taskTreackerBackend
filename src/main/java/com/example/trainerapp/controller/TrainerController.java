@@ -1,13 +1,12 @@
 package com.example.trainerapp.controller;
 
 import com.example.trainerapp.entity.Trainer;
-import com.example.trainerapp.service.TrainerService;
 import com.example.trainerapp.entity.Subject;
+import com.example.trainerapp.service.TrainerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/trainer")
@@ -20,35 +19,45 @@ public class TrainerController {
         this.trainerService = trainerService;
     }
 
+    // ✅ CREATE TRAINER
     @PostMapping
-    public Trainer addTrainer(@RequestBody Trainer trainer) {
-        return trainerService.addTrainer(trainer);
+    public ResponseEntity<Trainer> addTrainer(@RequestBody Trainer trainer) {
+        return ResponseEntity.ok(trainerService.addTrainer(trainer));
     }
 
+    // ✅ GET ALL TRAINERS
     @GetMapping
-    public List<Trainer> getAllTrainers() {
-        return trainerService.getAllTrainers();
+    public ResponseEntity<List<Trainer>> getAllTrainers() {
+        return ResponseEntity.ok(trainerService.getAllTrainers());
     }
 
+    // ✅ GET TRAINER BY ID
     @GetMapping("/{id}")
     public ResponseEntity<Trainer> getTrainerById(@PathVariable Long id) {
-        Optional<Trainer> trainer = trainerService.getTrainerById(id);
-        return trainer.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return trainerService.getTrainerById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    // ✅ DELETE TRAINER
     @DeleteMapping("/{id}")
-    public String deleteTrainer(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTrainer(@PathVariable Long id) {
         trainerService.deleteTrainer(id);
-        return "Trainer deleted successfully";
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{subject}/topic")
-    public List<Trainer> getTrainersBySubject(@PathVariable String subject) {
-        return trainerService.getTrainersBySubject(subject);
+    // ✅ GET TRAINERS BY SUBJECT NAME (FIXED PATH)
+    @GetMapping("/by-subject/{subjectName}")
+    public ResponseEntity<List<Trainer>> getTrainersBySubject(
+            @PathVariable String subjectName) {
+        return ResponseEntity.ok(
+                trainerService.getTrainersBySubject(subjectName)
+        );
     }
 
+    // ✅ GET SUBJECTS FOR A TRAINER
     @GetMapping("/{id}/subjects")
-    public List<Subject> getSubjectsForTrainer(@PathVariable Long id) {
-        return trainerService.getSubjectsByTrainer(id);
+    public ResponseEntity<List<Subject>> getSubjectsForTrainer(@PathVariable Long id) {
+        return ResponseEntity.ok(trainerService.getSubjectsByTrainer(id));
     }
 }

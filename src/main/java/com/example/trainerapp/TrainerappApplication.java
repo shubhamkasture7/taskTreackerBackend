@@ -8,7 +8,7 @@ public class TrainerappApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TrainerappApplication.class, args);
-		System.out.println("hello");
+		System.out.println("TrainerappApplication started successfully.");
 	}
 
 }
